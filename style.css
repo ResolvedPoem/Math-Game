@@ -31,6 +31,24 @@ html {
   padding: 8px;
 }
 
+.textbox {
+  width: 90vw;
+  margin: auto;
+  border: none;
+  outline: none;
+  background-color: #e9daf2;
+  padding: 2px;
+}
+
+/*.textbox:focus{
+  background-color: #dbcae6;
+}
+*/
+.textbox::placeholder {
+  font-family: "Lucida Console", monospace;
+  align-content: center;
+}
+
 .buttonPlacement {
   text-align: center;
 }

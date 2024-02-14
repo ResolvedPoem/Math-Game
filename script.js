@@ -2,6 +2,8 @@
 
 var questions = document.getElementById("output")
 
+
+
 function getRandomInt(min, max) {
   const minCeiled = Math.ceil(min);
   const maxFloored = Math.floor(max);
@@ -64,10 +66,14 @@ console.log(timePassed,initTime)
 
 function onStart() {
 
+  
   while (timePassed <= initTime + 61000) {
 
     var [problem, correct] = generateProblem();
     document.getElementById("output").innerText = `What is: ${problem}`
     timePassed = Date.now()
+
+    if ()
+
   }
 }
