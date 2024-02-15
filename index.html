@@ -17,20 +17,40 @@
       </div>
 
       <div class="playArea">
-        <div class="questions" id="output">
-          Correct!
+
+        <div class="topBox" id="topBox">
+
+          <div class="questions" id="output">Get Ready to Math...</div>
+          <div class="scoreboard" id="scores">
+
+            <div class="scoreboard" id="streakCounter">Current Streak:<br>0</div>
+            <div class="scoreboard" id="highScore">Highscore!<br>0</div>
+
+          </div>
+
         </div>
 
         <div class="answers" id="input">
-          <input class="textbox" type="textbox" name="playerAnswer" placeholder="Enter Your Answers Here">
+          <input class="textbox" type="textbox" name="playerAnswer"
+          id="playerAnswer" placeholder="Enter Your Answers Here">
         </div>
 
       </div>
 
       <div class=buttonPlacement>
         <button type="button" class="button" onclick="onStart()">Start</button>
-        <button type="button" class="button">Quit</button>
+        <button type="button" class="button" onclick="quitGame()">Quit</button>
       </div> 
+
+      <div class = instructions>
+        <p>Press or Type "Start" to Start. Press or Type "Quit" to quit.
+          <br>
+          You'll have 60 seconds to solve as many math problems as you can.
+        </p>
+      </div>
+      <div class = description>
+        <p>Welcome to my math game! Whether you're a new learner or a math veteran, this game should help you de-rust your quick calculation skills. The recorded highscore represents your personal best, so try to beat it! Math is a journey we all take at our own pace, and I enourage you to keep going. Wherever you are now, one day you may be the person who solves it all. Math, that is. Solves all of math.</p>
+      </div>
     </main>
 
     <script src="script.js">

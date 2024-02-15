@@ -1,8 +1,47 @@
 //defining essential functions
 
-var questions = document.getElementById("output")
+var questions, streakCounter, highScore, highScoreDiv, streak, longStreak;
 
 
+window.onload = function(){
+  document.addEventListener("keypress", waitForStart);
+  questions = document.getElementById("output");
+  streakCounter = document.getElementById("streakCounter");
+  highScoreDiv = document.getElementById("highScore");
+  streak = 0;
+  longStreak = 0;
+  if (document.cookie) {
+    if (document.cookie.includes(";")) {
+      highScoreReader = document.cookie.split(";");
+    }
+    else {
+      highScoreReader = [document.cookie];
+    }
+    highScoreDiv.lastChild.data = highScoreReader[0].split("=")[1];
+  }
+}
+
+function waitForStart(event) {
+  if (event.keyCode == 13) {
+    if (document.getElementById("playerAnswer").value.toLowerCase() == "start") {
+      onStart();
+    }
+    else {
+      document.getElementById("playerAnswer").value = "";
+    }
+  }
+} 
+
+function onStart() {
+
+  document.getElementById("playerAnswer").focus();
+  [problem, correct] = generateProblem();
+  questions.innerText = `What is: ${problem}`;
+  document.removeEventListener("keypress", waitForStart);
+  document.addEventListener("keypress", pressEnter);
+  document.getElementById("playerAnswer").value = "";
+  setTimeout(quitGame, 60000);
+}
 
 function getRandomInt(min, max) {
   const minCeiled = Math.ceil(min);
@@ -17,8 +56,11 @@ function chooseOp() {
 }
 
 function generateProblem() {
-  let num1 = getRandomInt(1,10);
-  let num2 = getRandomInt(1,10);
+
+  let minNum = 1;
+  let maxNum = 12;
+  let num1 = getRandomInt(minNum,maxNum);
+  let num2 = getRandomInt(minNum,maxNum);
   let operator = chooseOp();
   let correct;
     if (operator == "+"){
@@ -34,24 +76,16 @@ function generateProblem() {
     }
 
     else if (operator == "/"){
-      if (newQuestion = true) {
-        num1 = num1 * getRandomInt(1,4);
-        num2 = num2 * getRandomInt(1,4);
-      }
-
-      if (num1 < num2){
-        let numSwap = num1;
-        num1 = num2;
-        num2 = numSwap;
-      }
-      var remainder = num1%num2;
-      if (remainder != 0) {
-        num1 -= remainder;
-      }
-
-      correct = num1 / num2;
+      correct = num1;
+      num1 *= num2;     
+    
     }
   return [`${num1} ${operator} ${num2}`, correct];
+}
+
+function increaseStreak() {
+  streak++;
+  streakCounter.lastChild.data = streak;
 }
 
 //defining essential variables, arrays, and objects
@@ -59,21 +93,48 @@ function generateProblem() {
 var initTime = Date.now();
 var timePassed = Date.now();
 var newQuestion = true;
-var answer = "";
-console.log(timePassed,initTime)
+var answer, correct, problem;
 
 //program begins
 
-function onStart() {
+function quitGame() {
+  streak = -1;
+  increaseStreak();
+  questions.innerText = `Thanks for Playing! Your Longest Streak was: ${longStreak}.`
+  document.removeEventListener("keypress", pressEnter);
+  document.addEventListener("keypress", waitForStart);
+  if (longStreak > highScoreDiv.lastChild.data) {
+    highScoreDiv.lastChild.data = longStreak;
+  }
+  document.cookie = `highScoreDiv=${highScoreDiv.lastChild.data}`;
+}
 
-  
-  while (timePassed <= initTime + 61000) {
 
-    var [problem, correct] = generateProblem();
-    document.getElementById("output").innerText = `What is: ${problem}`
-    timePassed = Date.now()
+function pressEnter(event) {
+  event = event || window.event;
+  if (event.keyCode == 13) {
+    answer = document.getElementById("playerAnswer").value.toLowerCase();
+    document.getElementById("playerAnswer").value = "";
 
-    if ()
+    if (answer == correct) {
+      newQuestion = true;
+      increaseStreak();
+        if (streak > longStreak) {
+          longStreak = streak;
+        }
+      [problem, correct] = generateProblem();
+      questions.innerText = `Correct!\nWhat is: ${problem}`;
+    }
 
+    else if (answer == "quit") {
+      quitGame()
+    }
+
+    else {
+      newQuestion = false;
+      streak = -1;
+      increaseStreak();
+      questions.innerText = `Incorrect!\nWhat is: ${problem}`;
+    }
   }
 }
